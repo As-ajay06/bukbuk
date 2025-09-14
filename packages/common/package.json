@@ -1,0 +1,22 @@
+{
+  "name": "@repo/common",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "exports":{
+    "./zodSchema":"./src/zodTypes.ts"
+  },
+
+  "devDependencies":{
+    "@repo/typescript-config":"workspace:*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "zod": "^4.1.5"
+  }
+}
