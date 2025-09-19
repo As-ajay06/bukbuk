@@ -1,5 +1,6 @@
 import MessageBox from "./messageBox";
 import MessageWindow from "./messageWindow";
+import Navbar from "./navbar";
 
 export default function Main() {
     return <div className="w-3xl border border-black min-h-[500px] bg-message-Box grid grid-cols-5 rounded-2xl px-2 py-2">
@@ -15,11 +16,11 @@ export default function Main() {
         <div className="col-span-3 px-4 relative text-(--msg-text-color) bg-black h-full">
             <div className="bg-zinc-700 absolute inset-x-1 rounded-sm top-0 text-zinc-100 py-1.5 px-2 flex items-center z-20">Profile name</div>
             {/* messages */}
-            <div className="absolute h-[420px] inset-x-2 mt-10 mb-20 overflow-auto ">
+            <div className="absolute h-[420px] inset-x-4 mt-10 mb-20 overflow-auto">
                 {/* todo: write a logic if the message is sent from the other side than place it on the left side of the table */}
                 <div className="static inset-x-2">
                     {/* message to render here */}
-                    <div className=" w-full bg-red-500 mr-1">
+                    <div className=" w-full bg-red-500 pr-2 ">
                         <div className="flex flex-col">
                             <p className=" flex justify-end my-1">
                                 <div className="rounded-sm ring-1 ring-zinc-700 bg-zinc-800 w-fit px-4 py-1 flex justify-end">
@@ -29,7 +30,7 @@ export default function Main() {
                         </div>
                     </div>
                     {/* this is for the incoming messages */}
-                    <div className=" w-full bg-blue-600 ml-1">
+                    <div className=" w-full bg-blue-600 pl-2">
                         <div className="flex flex-col">
                             <p className=" flex justify-start my-1">
                                 <div className="rounded-sm ring-1 ring-zinc-700 bg-zinc-800 w-fit px-4 py-1 flex justify-end">

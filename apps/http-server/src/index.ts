@@ -5,12 +5,14 @@ import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "@repo/backend-common/config";
 import authentication from "./middlewares/auth";
 const prisma = new PrismaClient();
+import cors from "cors"
 
 // things to push in jwttoken
 // .env file
 const app = express();
 
 app.use(express.json())
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
     // send the data to the database
@@ -52,22 +54,22 @@ app.post("/signup", async (req, res) => {
 })
 app.post("/signin", async (req, res) => {
     // sign up endpoint
-
+    console.log(req.body);
     const parsed = signinUserSchema.safeParse(req.body);
     if (!parsed.success) {
         return res.status(400).json({ error: parsed.error })
     }
 
-    const { name, password } = parsed.data;
-
-    const userFound = await prisma.user.findFirst({ where: { name, password } })
+    const { name , password } = parsed.data;
+    
+    const userFound = await prisma.user.findFirst({ where: { name , password } })
     if (!userFound) {
-        return res.status(500).json({
-            error: "Sorry! invalid inputs"
+        res.status(500).json({
+            "message" : "Sorry! User not found"
         })
     } else {
         const userId = userFound.id
-        const token = jwt.sign({ username: name, userId: userId }, JWT_SECRET)
+        const token = jwt.sign({ name: name, userId: userId }, JWT_SECRET)
         res.json({
             token: token
         })
@@ -109,10 +111,11 @@ app.post("/room", authentication, async (req, res) => {
 //     res.send("hi there")
 // })
 
-// todo : add one more routes for the user to come and see the existing message
+// todo : do somethin in the socket for the user to see the existing message
 
-app.listen(3001, () => {
-    console.log("http server started")
+let PORT = 3001
+app.listen(PORT, () => {
+    console.log("http server started", PORT)
 })
 
 
