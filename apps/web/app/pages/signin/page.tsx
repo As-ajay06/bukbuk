@@ -17,36 +17,36 @@ type Profile = {
 export default function Signin() {
 
 
-    const [warningMessage ,setWarningMessage] = useState<string | null >()
+    const [warningMessage, setWarningMessage] = useState<string | null>("")
     const [profile, setProfile] = useState<Profile>({
         username: "",
         password: "",
     })
 
     const handleSubmit = async () => {
-        try{
-            
+        try {
+
             const res = await axios.post(`http://localhost:3001/signin`, {
                 name: profile.username,
                 password: profile.password
             })
-            
+
             const token = res.data.token;
             localStorage.setItem("autorization", token);
 
             console.log(warningMessage)
             // redirect to the home page
             redirect("http://localhost:3000/")
-        }catch(err: unknown ){
+        } catch (err: unknown) {
 
-            if( err instanceof AxiosError){
+            if (err instanceof AxiosError) {
                 console.log(err, await err.response?.data.message)
                 setWarningMessage(err.response?.data.message)
             }
         }
     }
 
-    const handleChange = (e : React.ChangeEvent<HTMLInputElement>) =>  {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(`${process.env.BASE_URL}`)
         e.preventDefault();
         const name = e.target.name;
@@ -83,14 +83,36 @@ export default function Signin() {
                         />
                         <button
                             onClick={handleSubmit}
-                            className ="bg-message-Box px-2 py-1.5 rounded-md outline-zinc-900 duration-200 mt-8 cursor-pointer"
+                            className="bg-message-Box px-2 py-1.5 rounded-md outline-zinc-900 duration-200 mt-8 cursor-pointer"
                         >sign in
                         </button>
                     </div>
                     <div className="text-center text-xs mt-2">
                         do not have the account? <Link className="underline text-blue-700" href={"/pages/signup"}>signup</Link> here
                     </div>
-                    <p className="bg-red-700 text-red-400 text-sm px-4 py-0.5">{warningMessage}</p>
+                    {warningMessage?.length == 0 ? "" :
+                        <p className="flex gap-2 bg-transparent border border-zinc-100 justify-center items-center text-sm font-medium px-4 py-2 rounded-md mb-10 mt-5 shadow-sm">
+                            <svg
+                                className="w-4 h-4 text-zinc-100"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 
+                                    0 1.918-.816 1.998-1.857L21 5.857C21.08 
+                                    4.816 20.216 4 19.162 4H4.838C3.784 4 
+                                    2.92 4.816 3 5.857l1.08 11.286C4.162 
+                                    19.184 5.026 20 6.08 20z"
+                                />
+                            </svg>
+                            {warningMessage}
+                        </p>
+
+                    }
                 </div>
             </div>
         </Container>
