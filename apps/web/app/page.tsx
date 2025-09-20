@@ -1,32 +1,20 @@
-"use client";
 
 import Main from "./component/main";
-import Container, { AuthorizationContext } from "./component/container";
+import Container from "./component/container";
 import Navbar from "./component/navbar";
-import { useContext, useEffect } from "react";
-import { createContext } from "vm";
+import Dashboard from "./component/dashboard";
 
-type AuthorizationContext = {
-  authorization : "default"
-}
 
 export default function Homepage() {
-
-
-  let { authorization } = useContext(AuthorizationContext)
-
-  useEffect(() => {
-    console.log(authorization)
-  }, [])
 
   return (
     <div className="relative h-screen items-center flex justify-center">
       <div className="absolute bottom-0 mb-10">
         <Navbar />
+    </div>
         <Container>
-          {authorization ? <Main /> : "" }
+          <Dashboard />
         </Container>
       </div>
-    </div>
   );
 }

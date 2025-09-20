@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Container from "../../component/container";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 
 type Profile = {
@@ -13,7 +13,7 @@ type Profile = {
 
 export default function Signup() {
 
-
+    const [message, setMessage] = useState<string | null >('');
     const [profile, setProfile] = useState<Profile>({
         username: "",
         password: "",
@@ -22,18 +22,24 @@ export default function Signup() {
 
     const handleSubmit = async () => {
 
-        console.log("here")
-        const res = await axios.post(`${process.env.BASE_URL}/signup`, {
-            username: profile.username,
-            password: profile.password,
-            email: profile.email,
-        });
+        try {
+            console.log("here")
+            const res = await axios.post(`${process.env.BASE_URL}/signup`, {
+                name: profile.username,
+                password: profile.password,
+                email: profile.email,
+            });
+            setMessage(await res.data.message)
+            console.log(await res.data.message)
 
-        const token = await res.data.token;
+            //redirect to sign in page, singed up successfully
+        } catch (err: unknown) {
 
-        if(token) localStorage.setItem("autorization", token);
-
-        // redirect to the home page
+            if (err instanceof AxiosError) {
+                console.log(err, await err.response?.data.message)
+                // todo : if user already exits than warning : user already exits, if not than succ: signed up successfully
+            }
+        }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,13 +81,40 @@ export default function Signup() {
                             type="password"
                             placeholder="Password" />
                         <button
-                            onClick={() => handleSubmit}
+                            onClick={handleSubmit}
                             className="bg-message-Box px-2 py-1.5 rounded-md outline-zinc-900 duration-200 mt-8 cursor-pointer"
-                        >sign in</button>
+                        >sign up</button>
                     </div>
                     <div className="text-center text-xs mt-2">
                         do not have the account? <Link className="underline text-blue-700" href={"/pages/signin"}>signin</Link> here
                     </div>
+                    { message?.length === 0 ? "" :
+                    <div className="flex flex-col justify-center">
+                     <p className="flex gap-2 bg-transparent border border-zinc-100 justify-center items-center text-sm font-medium px-4 py-2 rounded-md mb-1 mt-5 shadow-sm">
+                            <svg
+                                className="w-4 h-4 text-zinc-100"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.054 
+                                    0 1.918-.816 1.998-1.857L21 5.857C21.08 
+                                    4.816 20.216 4 19.162 4H4.838C3.784 4 
+                                    2.92 4.816 3 5.857l1.08 11.286C4.162 
+                                    19.184 5.026 20 6.08 20z"
+                                />
+                            </svg>
+                            {message}
+                        </p>
+                        <div className="flex justify-center text-sm mb-5">
+                        forgot account? <span className="text-blue-600 underline px-1"><a href="#">reset</a></span> password
+                        </div>
+                        </div>
+                        }
                 </div>
             </div>
         </Container>

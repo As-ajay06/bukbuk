@@ -5,7 +5,7 @@ import Link from "next/link";
 import Container from "../../component/container";
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 
@@ -14,9 +14,9 @@ type Profile = {
     password: string
 }
 
+
 export default function Signin() {
-
-
+    const router = useRouter();
     const [warningMessage, setWarningMessage] = useState<string | null>("")
     const [profile, setProfile] = useState<Profile>({
         username: "",
@@ -30,15 +30,17 @@ export default function Signin() {
                 name: profile.username,
                 password: profile.password
             })
-
+            console.log(res)
             const token = res.data.token;
-            localStorage.setItem("autorization", token);
+            localStorage.setItem("authorization", token);
 
-            console.log(warningMessage)
-            // redirect to the home page
-            redirect("http://localhost:3000/")
+            // redirected using router
+            if(token){
+                console.log("hi there")
+                router.push("/")
+           }
+            
         } catch (err: unknown) {
-
             if (err instanceof AxiosError) {
                 console.log(err, await err.response?.data.message)
                 setWarningMessage(err.response?.data.message)

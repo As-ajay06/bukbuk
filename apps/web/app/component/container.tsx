@@ -1,8 +1,4 @@
-"use client";
-import React, { useState } from 'react'
-import { createContext } from 'react';
-
-export const AuthorizationContext = createContext<Authorization>({ authorization: "", });
+import React from "react"
 
 export default function Container({ children, className }: {
   children: React.ReactNode,
