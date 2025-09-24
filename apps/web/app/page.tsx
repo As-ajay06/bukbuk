@@ -1,20 +1,15 @@
-
-import Main from "./component/main";
 import Container from "./component/container";
-import Navbar from "./component/navbar";
-import Dashboard from "./component/dashboard";
+import Navbar from "./component/Navbar";
 
 
-export default function Homepage() {
+export default function Home() {
 
-  return (
-    <div className="relative h-screen items-center flex justify-center">
-      <div className="absolute bottom-0 mb-10">
-        <Navbar />
-    </div>
-        <Container>
-          <Dashboard />
-        </Container>
+  return <div className="text-white">
+    <Container>
+      <Navbar />
+      <div className="">
+        Welcome to BukBuk!
       </div>
-  );
+    </Container>
+  </div>
 }

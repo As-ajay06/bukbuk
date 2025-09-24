@@ -1,17 +1,8 @@
-import React from "react"
+import { ReactNode } from "react";
 
-export default function Container({ children, className }: {
-  children: React.ReactNode,
-  className?: string
-}) {
+export default function Container ({children, className} : {children: React.ReactNode , className?: string}){
 
-  return (
-
-    <div
-      className='w-5xl mx-auto px-1 pt-3 flex items-center justify-center'
-    >
-      {children}
+    return <div className={`w-5xl mx-auto flex justify-center ${className}`}>
+        {children}
     </div>
-
-  )
 }

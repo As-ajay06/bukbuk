@@ -3,19 +3,12 @@ import { WebSocketServer } from "ws";
 import WebSocket from "ws";
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "@repo/backend-common/config";
-import { request } from "http";
 
 const wss = new WebSocketServer({ port: 8080 });
 import { PrismaClient } from "../../../packages/database/generated/prisma";
 
 const prisma = new PrismaClient();
 
-// interface User {
-//     socket: WebSocket,
-//     room: string
-// }
-
-// To be applied
 interface User {
     socket: WebSocket,
     rooms: string[],
@@ -88,8 +81,6 @@ wss.on("connection", async (socket, request) => {
                     if (user) {
                         user.rooms.push(parsedMessage.roomId)
                     }
-
-                    console.log(user?.rooms, user?.userId)
                     socket.send("you can now send messages")
                 } catch (error) {
                     socket.send("you are sending something wrong")
@@ -97,11 +88,15 @@ wss.on("connection", async (socket, request) => {
             }
 
             // below this line there exits fault in the rooms behavour
+            /*
+            the faulty behaviour is people can send the message even if they are not joined to the room
+            */
+           
             if (parsedMessage.type === 'CHAT') {
 
-                // get the user and log their userId
-                try {
+                // todo: people cannot send chat if that socket is not JOIN in the server. 
 
+                try {
                     const roomId = parsedMessage.roomId;
                     const message = parsedMessage.message;
                     users.forEach(user => {
@@ -113,8 +108,6 @@ wss.on("connection", async (socket, request) => {
                 } catch (error) {
                     socket.send(`${error}`)
                 }
-
-
             }
 
             if (parsedMessage.type == "LEAVE") {
@@ -139,18 +132,16 @@ wss.on("connection", async (socket, request) => {
             socket.send(`{err}`)
         }
     })
-    // write a logic for leave room
 }
 )
 
 
 
-// todos: 
+// todo: 
 
 /*
 aurhentication logic
 make this fully functional chat application
-
 and add more features if you can
-
+not storing chats in the database . And try to recreate this chat application one more time.
 */

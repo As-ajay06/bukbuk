@@ -42,7 +42,7 @@ app.post("/signup", async (req, res) => {
             })
             // compare the hashed password here then allow the user to send the json
             res.json({
-                "messesge": "You are signed up"
+                "messesge": "Succesfull! , You are signed up"
             })
 
         }
@@ -54,7 +54,8 @@ app.post("/signup", async (req, res) => {
 })
 app.post("/signin", async (req, res) => {
     // sign up endpoint
-    console.log(req.body);
+    // try to use params in this field and do the operation
+    
     const parsed = signinUserSchema.safeParse(req.body);
     if (!parsed.success) {
         return res.status(400).json({ error: parsed.error })
@@ -106,10 +107,20 @@ app.post("/room", authentication, async (req, res) => {
 })
 
 
-// app.post("/chat_room", (req, res) => {
-//     // send the data to the database
-//     res.send("hi there")
-// })
+app.get("/chats/:roomId", async(req, res) => {
+    // get the messages from database
+    const roomId = Number(req.params.roomId);
+    console.log(roomId)
+    // write a logic to store messsage in the database.
+    // and write the logic after that to show the message when rendered.
+    const messages = await prisma.room.findMany({
+        where:{
+            id: roomId
+        }
+    })
+
+    console.log(messages);
+})
 
 // todo : do somethin in the socket for the user to see the existing message
 

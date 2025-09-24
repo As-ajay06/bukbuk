@@ -1,0 +1,37 @@
+import Link from "next/link"
+
+export default function Navbar() {
+
+    const links = [
+        {
+            title: "sign in",
+            href: "/signin"
+        },
+        {
+            title: "create Room",
+            href: "/create"
+        },
+        {
+            title: "join room",
+            href: "/join"
+        },
+    ]
+
+    return <div>
+        <div className="flex gap-2 justify-center absolute inset-x-0 bottom-0 mb-10">
+            {links.map((link, index) => (
+                <div
+                    key={index}
+                    className="ring-1 ring-zinc-800 px-4 py-1.5 rounded-md hover:scale-95 duration-125"
+                >
+                    <Link href={link.href}>{link.title}</Link>
+                </div>
+            ))}
+            <div
+                className="ring-1 ring-zinc-800 px-4 py-1.5 rounded-md hover:scale-95 duration-125"
+            >
+                <button >Logout</button>
+            </div>
+        </div>
+    </div>
+}
