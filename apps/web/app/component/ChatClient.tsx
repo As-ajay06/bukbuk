@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket"
+import Container from "./container";
 
 export default function ChatClient({ roomId }: { roomId: any }) {
 
@@ -10,7 +11,6 @@ export default function ChatClient({ roomId }: { roomId: any }) {
     const { socket, loading } = useSocket();
 
     const [chats, setChats] = useState([]);
-    // here we will the logic to send message. And will the show the ui in the browser.
 
     useEffect(() => {
         if (socket && !loading) {
@@ -23,7 +23,7 @@ export default function ChatClient({ roomId }: { roomId: any }) {
             socket.onmessage = (event) => {
                 const data = event.data
                 // @ts-ignore
-                setChats((m) => [...m , data])
+                setChats((m) => [...m, data])
                 console.log(chats)
             }
         }
@@ -33,29 +33,37 @@ export default function ChatClient({ roomId }: { roomId: any }) {
     console.log(chats)
 
     return <div>
-        <div className="text-white">
-            {/* set all new messages here with prevoius messages if any */}
-
-            {chats.map((c, index) => (
-                <div key={index}>{c}</div>
-            ))}
-        </div>
-        <div>
-            <input
-                value={message}
-                type="text"
-                placeholder="write message to send"
-                onChange={(e => {
-                    setMessage(e.target.value)
-                })}
-            />
-        </div>
-        <button onClick={() =>
-            socket?.send(JSON.stringify({
-                "type": "CHAT",
-                "roomId": roomId,
-                "message": message,
-            }))
-        }>send</button>
+        <Container>
+            <div className="w-full flex justify-center">
+                <div className="text-white w-96 flex justify-center">
+                    <div className="flex justify-center w-full">
+                        {chats.map((c, index) => (
+                            <div key={index}>{c}</div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="w-full flex justify-center">
+                <div className="flex w-fit">
+                    <div >
+                        <input
+                            value={message}
+                            type="text"
+                            placeholder="write message to send"
+                            onChange={(e => {
+                                setMessage(e.target.value)
+                            })}
+                        />
+                    </div>
+                    <button onClick={() =>
+                        socket?.send(JSON.stringify({
+                            "type": "CHAT",
+                            "roomId": roomId,
+                            "message": message,
+                        }))
+                    }>send</button>
+                </div>
+            </div>
+        </Container>
     </div>
 }
