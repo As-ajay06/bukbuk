@@ -8,13 +8,12 @@ export default function useSocket() {
     useEffect(() => {
 
         const access_token = localStorage.getItem("authorization")
+        console.log("access_token", access_token);
         const ws = new WebSocket(`${WEB_SOCKET_URL}?access_token=${access_token}`);
         // todo: see more about onopen event.
         ws.onopen = () => {
-
             setLoading(false);
             setSocket(ws);
-            console.log("socket here")
         }
     }, [])
 

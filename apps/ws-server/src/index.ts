@@ -6,6 +6,7 @@ import { JWT_SECRET } from "@repo/backend-common/config";
 
 const wss = new WebSocketServer({ port: 8080 });
 import { PrismaClient } from "../../../packages/database/generated/prisma";
+import constants from "node:constants";
 
 const prisma = new PrismaClient();
 
@@ -74,14 +75,20 @@ wss.on("connection", async (socket, request) => {
             if (parsedMessage.type === 'JOIN') {
                 // write the join login here
                 // take the socket and let the user join the room
-
                 try {
-
                     const user = users.find(x => x.socket === socket)
+                    const userId = users.find(x => x.socket === socket)?.userId;
                     if (user) {
-                        user.rooms.push(parsedMessage.roomId)
+                        user.rooms.push(parsedMessage.roomId);
+
+                        const id = {
+                            userId : userId
+                        }
+
+                        socket.send(JSON.stringify(id).toString());
+                        console.log(JSON.stringify(id).toString())
                     }
-                    socket.send("you can now send messages")
+                    console.log("you can now send messages");
                 } catch (error) {
                     socket.send("you are sending something wrong")
                 }
@@ -96,15 +103,21 @@ wss.on("connection", async (socket, request) => {
 
                 // todo: people cannot send chat if that socket is not JOIN in the server. 
 
+                // get the userId from here , search in the in memory database
+                const userId = users.find((user) => user.socket === socket)?.userId;
+                console.log(userId);
                 try {
                     const roomId = parsedMessage.roomId;
                     const message = parsedMessage.message;
                     users.forEach(user => {
                         if (user.rooms.includes(roomId)) {
-                            user.socket.send(message)
+                            const payload = {
+                                message: message,
+                                userId: userId
+                            }
+                            user.socket.send(JSON.stringify(payload).toString());
                         }
                     })
-
                 } catch (error) {
                     socket.send(`${error}`)
                 }
