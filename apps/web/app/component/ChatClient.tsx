@@ -11,9 +11,9 @@ export default function ChatClient({ roomId }: { roomId:string}) {
     const { socket, loading } = useSocket();
     const [userId, setUserId] = useState();
     const [chats, setChats] = useState([]);
+    const {myId} = useJoinSocket();
 
     
-    const {myId} = useJoinSocket();
     console.log("myId", myId)
     
     useEffect(() => {

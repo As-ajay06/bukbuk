@@ -4,6 +4,10 @@ export default function Navbar() {
 
     const links = [
         {
+            title: "sign up",
+            href: "/signup"
+        },
+        {
             title: "sign in",
             href: "/signin"
         },
@@ -22,13 +26,13 @@ export default function Navbar() {
             {links.map((link, index) => (
                 <div
                     key={index}
-                    className="ring-1 ring-zinc-800 px-4 py-1.5 rounded-md hover:scale-95 duration-125"
+                    className="ring-1 ring-zinc-800 px-4 py-1.5 rounded-md hover:scale-95 duration-125 hover:text-zinc-500"
                 >
                     <Link href={link.href}>{link.title}</Link>
                 </div>
             ))}
             <div
-                className="ring-1 ring-zinc-800 px-4 py-1.5 rounded-md hover:scale-95 duration-125"
+                className="ring-1 ring-zinc-800 px-4 py-1.5 rounded-md hover:scale-95 duration-125 hover:text-zinc-500"
             >
                 <button >Logout</button>
             </div>
