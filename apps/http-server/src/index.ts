@@ -42,7 +42,7 @@ app.post("/signup", async (req, res) => {
             })
             // compare the hashed password here then allow the user to send the json
             res.json({
-                "messesge": "Succesfull! , You are signed up"
+                message : "Succesfull! , You are signed up"
             })
 
         }

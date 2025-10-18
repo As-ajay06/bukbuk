@@ -4,26 +4,27 @@
 import { useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import useJoinSocket from "../hooks/useJoinSocket";
+import { measureMemory } from "vm";
 
-export default function ChatClient({ roomId }: { roomId:string}) {
+export default function ChatClient({ roomId }: { roomId: string }) {
 
-    const [message, setMessage] = useState<string>("");
+    const [message, setMessage] = useState<string>();
     const { socket, loading } = useSocket();
     const [userId, setUserId] = useState();
     const [chats, setChats] = useState([]);
-    const {myId} = useJoinSocket();
+    const { myId } = useJoinSocket();
 
-    
+
     console.log("myId", myId)
-    
+
     useEffect(() => {
         if (socket && !loading) {
-            
+
             socket.send(JSON.stringify({
                 "type": "JOIN",
                 "roomId": roomId
             }))
-            
+
             // const { myId } = useJoinSocket();
             // console.log(myId);
 
@@ -53,52 +54,65 @@ export default function ChatClient({ roomId }: { roomId:string}) {
     console.log("userId ", userId)
     console.log(chats)
 
-    return <div>
-        <div className="w-xl bg-pink-600 h-96 flex flex-col justify-between px-2 py-2">
-            <div className="w-full h-96 flex justify-end bg-yellow-400 flex-1">
-                <div className="text-white p-0.5 w-full bg-slate-500 overflow-auto">
-                    <div className="flex flex-col inset-x-0 bg-green-300 px-4 py-1.5 ring-zinc-900 rounded-md">
-                        {chats.map((c, index) => (
-                            <div className="w-full" key={index}>
-                                {c.userId !== myId ?
-                                    <div className="w-full flex justify-start bg-yellow-200 ">
-                                        <div className="w-fit bg-black">
+    return <div className="w-xl h-[540px] flex flex-col justify-between px-2 py-2 bg-zinc-900 rounded-xl">
+        {/* Chat Box */}
+        <div className="w-full flex justify-end flex-1 overflow-hidden rounded-xl ring-1 ring-zinc-800">
+            <div className="w-full text-white overflow-auto p-2">
+
+                <div className="flex flex-col px-4 py-2 rounded-md ring-1 ring-zinc-900 space-y-2">
+                    {chats.map((c, index) => (
+                        <div key={index}>
+                            {c.userId !== myId ? (
+                                <div className="w-full flex justify-start">
+                                    {c.message &&
+                                        <div className="bg-black px-4 py-2 rounded-md text-yellow-200 max-w-[75%]">
                                             {c.message}
                                         </div>
-                                    </div> :
-                                    <div className="w-full flex justify-end bg-red-200 ">
-                                    <div className="w-fit bg-black">
-                                        {c.message}
-                                    </div>
-                                    </div>
                                     }
-                            </div>
-                        )
-                        )}
-                    </div>
-                </div>
-            </div>
-            <div className="w-full flex justify-center bg-black">
-                <div className="flex w-fit">
-                    <div className="bg-zinc-700">
-                        <input
-                            value={message}
-                            type="text"
-                            placeholder="write message to send"
-                            onChange={(e => {
-                                setMessage(e.target.value)
-                            })}
-                        />
-                    </div>
-                    <button onClick={() =>
-                        socket?.send(JSON.stringify({
-                            "type": "CHAT",
-                            "roomId": roomId,
-                            "message": message,
-                        }))
-                    }>send</button>
+                                </div>
+                            ) : (
+                                <div className="w-full flex justify-end">
+                                    {c.message &&
+                                        <div className="bg-black px-4 py-2 ring-1 ring-zinc-400 rounded-md text-zinc-100 max-w-[75%]">
+                                            {c.message}
+                                        </div>
+                                    }
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
+
+        {/* Message Input */}
+        <div className="w-full flex justify-center py-4">
+            <div className="flex justify-between w-full space-x-1 mx-2">
+                <div className="w-full bg-zinc-700 rounded-md overflow-hidden">
+                    <input
+                        value={message}
+                        type="text"
+                        placeholder="Write message to send"
+                        onChange={(e) => setMessage(e.target.value)}
+                        className="w-full flex flex-1 px-4 py-2 bg-zinc-700 text-white outline-none "
+                    />
+                </div>
+                <button
+                    onClick={() =>
+                        socket?.send(
+                            JSON.stringify({
+                                type: "CHAT",
+                                roomId: roomId,
+                                message: message,
+                            })
+                        )
+                    }
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                >
+                    Send
+                </button>
+            </div>
+        </div>
     </div>
+
 }

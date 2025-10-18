@@ -1,16 +1,22 @@
 "use client";
-import { useState } from "react";
+import { ReactEventHandler, useState } from "react";
 import { useRouter } from "next/navigation";
 import useSignin from "../hooks/useSignin"
 import { AxiosResponse } from "axios";
 
+type User = {
+    username: string,
+    password: string
+}
+
 export default function Signin() {
-    const [username, setUsername ] = useState<{ username : string }>({ username : ""});
-    const [password , setPassword] = useState<{ password : string }>({ password : ""});
-    const navigation = useRouter();
+
+    const [ user , setUser ] = useState<User>({ username: '', password: ''})
+    const router = useRouter();
 
     const handleSubmit =  async () => {
-        const response: AxiosResponse = await useSignin( username , password )
+        // todo : start from here
+        const response: AxiosResponse = await useSignin( user.username , user.password )
         console.log(response);
 
         const token = response.data.token;
@@ -18,8 +24,15 @@ export default function Signin() {
         if(token){
             localStorage.setItem("authorization" , token);
             console.log("here")
-            navigation.push("http://localhost:3000/")
+            router.push("http://localhost:3000/")
         }
+    }
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setUser((val) => ( {...val , [name]: value }))
     }
 
     return <div className="flex items-center justify-center mx-auto w-screen h-screen">
@@ -27,21 +40,21 @@ export default function Signin() {
                 <div>
                     <input
                         type="text"
-                        name="name"
-                        value={username}
-                        placeholder="Enter unsername"
+                        name="username"
+                        value={user.username}
+                        onChange={handleChange}
+                        placeholder="Enter username"
                         className="ring-1 ring-zinc-800 text-zinc-100 px-4 py-1.5 rounded-md w-full mb-4 outline-none"
-                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div>
                     <input
                         type="password"
                         name="password"
-                        value={password}
+                        value={user.password}
+                        onChange={handleChange}
                         placeholder="Enter password"
                         className="ring-1 ring-zinc-800 text-zinc-100 px-4 py-1.5 rounded-md w-full mb-4 outline-none"
-                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 <div>
