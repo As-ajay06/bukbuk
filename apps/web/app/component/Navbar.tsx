@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation";
+import { title } from "process";
 
 export default function Navbar() {
 
@@ -23,6 +24,10 @@ export default function Navbar() {
         {
             title: "contact me",
             href: "/contact"
+        },
+        {
+            title:"Buy me a coffee",
+            href: `${process.env.NEXT_PUBLIC_BUYMEACOFEE}`
         }
     ]
 

@@ -5,6 +5,12 @@ import { useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import useJoinSocket from "../hooks/useJoinSocket";
 
+
+type ResponseObject = {
+    userId : String,
+    message? : String
+}
+
 export default function ChatClient({ roomId }: { roomId: string }) {
 
     const [message, setMessage] = useState<string>();
@@ -65,7 +71,7 @@ export default function ChatClient({ roomId }: { roomId: string }) {
             <div className="w-full text-white overflow-auto p-2">
 
                 <div className="flex flex-col px-4 py-2 rounded-md ring-1 ring-zinc-900 space-y-2">
-                    {chats.map((c, index) => (
+                    {chats.map((c: ResponseObject, index) => (
                         <div key={index}>
                             {c.userId !== myId ? (
                                 <div className="w-full flex justify-start bg-red-400">

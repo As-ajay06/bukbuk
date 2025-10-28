@@ -53,7 +53,17 @@ export default function Contact() {
                             </li>
                         </div>
                     )}
+                </div>
 
+                <div className=" shadow-xl rounded-2xl p-6 flex flex-col items-center w-full max-w-sm">
+                    <a
+                        href={process.env.NEXT_PUBLIC_BUYMEACOFEE}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-2 rounded-full transition-all duration-200"
+                    >
+                        Buy Me a Coffee
+                    </a>
                 </div>
             </Container>
         </div>
