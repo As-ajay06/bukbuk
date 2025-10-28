@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import useSocket from "./useSocket";
+import { useParams } from "next/navigation";
 
 
 export default function useJoinSocket() {
@@ -9,12 +10,12 @@ export default function useJoinSocket() {
     const [myId, setMyId] = useState<string>()
     const { socket, loading } = useSocket();
 
-    const roomId = "5";
+    const params = useParams<{ roomId: string}>()
 
     if (socket && !loading) {
         socket.send(JSON.stringify({
             "type": "JOIN",
-            "roomId": roomId
+            "roomId": params.roomId
         }))
 
         socket.onmessage = (event) => {

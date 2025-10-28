@@ -19,7 +19,7 @@ interface User {
 
 
 const users: User[] = [];
-const allRoom = [];
+
 // store the userID , socket , room
 
 // check if the user is authenticated

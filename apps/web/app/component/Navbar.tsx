@@ -17,13 +17,13 @@ export default function Navbar() {
             href: "/signin"
         },
         {
-            title: "create Room",
-            href: "/create"
-        },
-        {
             title: "join room",
             href: "/join"
         },
+        {
+            title: "contact me",
+            href: "/contact"
+        }
     ]
 
     const handleLogout = () => {

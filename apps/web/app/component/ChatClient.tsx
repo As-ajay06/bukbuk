@@ -4,20 +4,25 @@
 import { useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import useJoinSocket from "../hooks/useJoinSocket";
-import { measureMemory } from "vm";
 
 export default function ChatClient({ roomId }: { roomId: string }) {
 
     const [message, setMessage] = useState<string>();
-    const { socket, loading } = useSocket();
     const [userId, setUserId] = useState();
     const [chats, setChats] = useState([]);
     const { myId } = useJoinSocket();
+    const { socket, loading } = useSocket();
+    
+    // this statement is for not to re-render the useEffect() for one.
+    const [wait , setWait] = useState(false);
 
-
+    
+    
     console.log("myId", myId)
 
     useEffect(() => {
+
+        console.log(loading)
         if (socket && !loading) {
 
             socket.send(JSON.stringify({
@@ -25,9 +30,7 @@ export default function ChatClient({ roomId }: { roomId: string }) {
                 "roomId": roomId
             }))
 
-            // const { myId } = useJoinSocket();
-            // console.log(myId);
-
+        if(wait){
 
             socket.onmessage = (event) => {
                 const data = event.data;
@@ -45,9 +48,11 @@ export default function ChatClient({ roomId }: { roomId: string }) {
                 // @ts-ignore
                 setChats((m) => [...m, parsedMessage])
                 console.log(chats);
-
             }
         }
+        setWait(true);
+    }
+        return () => {}
     }
         , [socket, loading])
 
@@ -63,7 +68,7 @@ export default function ChatClient({ roomId }: { roomId: string }) {
                     {chats.map((c, index) => (
                         <div key={index}>
                             {c.userId !== myId ? (
-                                <div className="w-full flex justify-start">
+                                <div className="w-full flex justify-start bg-red-400">
                                     {c.message &&
                                         <div className="bg-black px-4 py-2 rounded-md text-yellow-200 max-w-[75%]">
                                             {c.message}
