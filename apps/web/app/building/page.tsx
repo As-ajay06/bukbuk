@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const CurrentlyBuilding: React.FC = () => {
     return (
@@ -8,7 +9,7 @@ const CurrentlyBuilding: React.FC = () => {
             {/* Secondary illustration image */}
 
             {/* Tertiary image from Nativ Ibiza link */}
-            <img
+            <Image
                 src="https://nativibiza.com/wp-content/uploads/2022/07/Destacada_NFT.jpg"
                 alt="NFT illustration from Nativ Ibiza"
                 className="absolute inset-0 w-full h-full object-cover opacity-100"

@@ -1,11 +1,14 @@
-
+"use client";
 
 import ChatClient from "../../component/ChatClient";
 import Navbar from "../../component/Navbar";
+import { useParams } from "next/navigation";
 
-export default async function ChatRoom({ params } : { params : any}) {
+
+export default function ChatRoom() {
     
-    const {roomId} = await params;
+    const params = useParams<{ roomId : string }>();
+    const { roomId } = params;
     /*
     todo: write a better frontend
     todo: write this app one more time 

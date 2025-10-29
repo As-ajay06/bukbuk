@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSocket from "./useSocket";
 import { useParams } from "next/navigation";
 

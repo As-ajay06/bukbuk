@@ -1,9 +1,7 @@
 import React from "react";
 
 const BuyMeCoffee: React.FC = () => {
-  const coffeeLink = "https://www.buymeacoffee.com/yourusername"; // Replace with your actual link
-  const qrImage =
-    "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.buymeacoffee.com/yourusername";
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 text-gray-800 font-sans p-4">

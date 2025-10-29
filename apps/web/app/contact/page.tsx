@@ -1,14 +1,8 @@
-"use client";
 
-import axios from "axios";
-import { useState } from "react";
 import Link from "next/link";
 import Container from "../component/container";
 
 export default function Contact() {
-
-    console.log(process.env.NEXT_PUBLIC_X_LINK)
-    console.log(process.env.NEXT_PUBLIC_ANALYTICS_ID)
 
     const contactLinks = [
         {

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation"
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+
 
 export default function JoinRoom() {
     const router = useRouter()
