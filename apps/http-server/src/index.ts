@@ -1,10 +1,9 @@
 import express from "express"
 import { signinUserSchema, UserSchema, createRoomSchema } from "@repo/common/zodSchema"
-import { PrismaClient } from "../../../packages/database/generated/prisma"
 import jwt from "jsonwebtoken"
+import { prismaClient } from "@repo/database/client";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import authentication from "./middlewares/auth";
-const prisma = new PrismaClient();
 import cors from "cors"
 
 // things to push in jwttoken
@@ -29,13 +28,13 @@ app.post("/signup", async (req, res) => {
 
     // @ts-ignore
     try {
-        const existing = await prisma.user.findFirst({ where: { email } })
+        const existing = await prismaClient.user.findFirst({ where: { email } })
         if (existing) {
             return res.json({
                 message: "user already exits"
             })
         } else {
-            await prisma.user.create({
+            await prismaClient.user.create({
                 // check this type error
                 // todo hash the password
                 data: { email, password, name }
@@ -63,7 +62,7 @@ app.post("/signin", async (req, res) => {
 
     const { name , password } = parsed.data;
     
-    const userFound = await prisma.user.findFirst({ where: { name , password } })
+    const userFound = await prismaClient.user.findFirst({ where: { name , password } })
     if (!userFound) {
         res.status(500).json({
             "message" : "Sorry! User not found"
@@ -93,7 +92,7 @@ app.post("/room", authentication, async (req, res) => {
     const userId = req.userId;
 
     // use try catch
-    const room = await prisma.room.create({
+    const room = await prismaClient.room.create({
         data: {
             //@ts-ignore
             slug: parsedData.data?.name,
@@ -113,7 +112,7 @@ app.get("/chats/:roomId", async(req, res) => {
     console.log(roomId)
     // write a logic to store messsage in the database.
     // and write the logic after that to show the message when rendered.
-    const messages = await prisma.room.findMany({
+    const messages = await prismaClient.room.findMany({
         where:{
             id: roomId
         }
