@@ -21,7 +21,7 @@ Built with **TypeScript**, **WebSockets**, **Turborepo**, and **PostgreSQL**, it
 
 | Category | Technology |
 |-----------|-------------|
-| **Frontend** | React, Tailwind CSS, WebSocket |
+| **Frontend** | Nextjs , Tailwind CSS, WebSocket |
 | **Backend** | Node.js, Express, WebSocket, HTTP Server |
 | **Database** | PostgreSQL |
 | **ORM** | Prisma |
