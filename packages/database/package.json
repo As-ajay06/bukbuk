@@ -4,9 +4,6 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "postinstall": "prisma generate --schema=packages/database/prisma/schema.prisma"
-  },
   "exports": {
     "./client": "./src/index.ts"
   },
