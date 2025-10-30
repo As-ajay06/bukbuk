@@ -13,6 +13,8 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
+const PORT = 3001 ;
+
 app.post("/signup", async (req, res) => {
     // send the data to the database
     const parsed = UserSchema.safeParse(req.body)
@@ -123,7 +125,7 @@ app.get("/chats/:roomId", async(req, res) => {
 
 // todo : do somethin in the socket for the user to see the existing message
 
-let PORT = 3001
+
 app.listen(PORT, () => {
     console.log("http server started", PORT)
 })
