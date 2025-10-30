@@ -1,3 +1,4 @@
+require('dotenv').config();
 import express from "express"
 import { signinUserSchema, UserSchema, createRoomSchema } from "@repo/common/zodSchema"
 import jwt from "jsonwebtoken"
@@ -13,7 +14,7 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
-const PORT = 3001 ;
+const PORT = process.env.PORT || 4000 ;
 
 app.post("/signup", async (req, res) => {
     // send the data to the database
